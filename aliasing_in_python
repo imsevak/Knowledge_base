@@ -1,0 +1,91 @@
+● Aliasing in Python
+
+  Aliasing is when two or more variables refer to the same object in memory. Changing one affects the other.
+
+  Basic example
+
+  a = [1, 2, 3]
+  b = a          # b is an alias — same object, not a copy
+
+  b.append(4)
+  print(a)       # [1, 2, 3, 4] — a changed too!
+  print(a is b)  # True — same object
+
+  This does NOT happen with immutable types
+
+  x = 10
+  y = x
+  y = 20
+  print(x)       # 10 — unchanged, because int is immutable
+
+  Immutable types (int, float, str, tuple) can't be modified in place, so aliasing is harmless.
+
+  Common aliasing traps
+
+  1. Function arguments
+  def add_item(items):
+      items.append("new")  # modifies the original list!
+
+  my_list = ["a", "b"]
+  add_item(my_list)
+  print(my_list)  # ["a", "b", "new"]
+
+  2. Nested lists
+  row = [0, 0, 0]
+  grid = [row, row, row]  # three aliases to the same list
+
+  grid[0][1] = 5
+  print(grid)  # [[0, 5, 0], [0, 5, 0], [0, 5, 0]] — all rows changed!
+
+  3. Default mutable arguments
+  def add_item(item, items=[]):  # BAD — shared across all calls
+      items.append(item)
+      return items
+
+  print(add_item("a"))  # ["a"]
+  print(add_item("b"))  # ["a", "b"] — unexpected!
+
+  Fix:
+  def add_item(item, items=None):
+      if items is None:
+          items = []
+      items.append(item)
+      return items
+
+  How to avoid aliasing — make copies
+
+  a = [1, 2, 3]
+
+  # Shallow copy (top-level only)
+  b = a.copy()
+  b = a[:]
+  b = list(a)
+
+  # Deep copy (nested objects too)
+  import copy
+  c = copy.deepcopy(a)
+
+  Dictionary aliasing — same rules
+
+  info = {"ip": "10.0.0.1", "mac": "aa:bb:cc"}
+  backup = info          # alias!
+  backup["ip"] = "none"
+  print(info["ip"])      # "none" — original changed
+
+  # Fix: copy
+  backup = info.copy()
+
+  Quick rule of thumb
+
+  ┌────────────────────────┬──────────┬────────────────┐
+  │          Type          │ Mutable? │ Aliasing risk? │
+  ├────────────────────────┼──────────┼────────────────┤
+  │ int, float, str, tuple │ No       │ Safe           │
+  ├────────────────────────┼──────────┼────────────────┤
+  │ list, dict, set        │ Yes      │ Be careful     │
+  ├────────────────────────┼──────────┼────────────────┤
+  │ Custom objects         │ Yes      │ Be careful     │
+  └────────────────────────┴──────────┴────────────────┘
+
+  The key insight: assignment (=) never copies data — it just creates another name pointing to the same object. Use
+  .copy() or copy.deepcopy() when you need independence.
