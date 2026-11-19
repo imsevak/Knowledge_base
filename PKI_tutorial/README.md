@@ -5,7 +5,7 @@ lesson, then a short quiz. Each lesson is about 15 minutes of reading plus a lab
 
 | # | Lesson | Status |
 |---|---|---|
-| 1 | [The problem, and the building blocks: hashes, key pairs, signatures](lesson-01-building-blocks.md) | in progress |
+| 1 | [The problem, and the building blocks: hashes, key pairs, signatures, session keys, (EC)DHE](lesson-01-building-blocks.md) | in progress |
 | 2 | Certificates: what's inside an X.509 certificate, and why one exists at all | |
 | 3 | Chains: your own root CA, an intermediate CA, verifying a chain by hand | |
 | 4 | TLS and mutual TLS: the handshake, devices proving identity to each other | |
