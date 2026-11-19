@@ -84,4 +84,53 @@ _(fill in)_
 
 ## Questions and answers
 
-_(questions that come up while studying this lesson)_
+### Q: How do public keys get exchanged?
+A public key **doesn't need to be secret**; it can travel in the open. The real problem is
+**authenticity**: "is this really Alice's key, or an attacker's?" Three ways to answer it:
+
+1. **Out of band:** get the key, or compare its fingerprint, over a second trusted channel. Example:
+   SSH's first-connection "are you sure?" prompt (*trust on first use*), or copying `id_rsa.pub` into
+   `authorized_keys`. Doesn't scale to millions of strangers.
+2. **Pre-installed:** baked in at the factory or install time. Examples: the ~150 root CA keys in every
+   OS and browser; an update server's key burned into device firmware (how OTA images are verified).
+   Changing it needs a software update.
+3. **Inside a certificate (PKI):** the key arrives over the network with a name, **signed by a CA**.
+   You don't trust the key, you trust the CA's signature on it, which you can check because you
+   already have the CA's key (method 2). Like a passport: you believe the name because you trust the
+   issuing government. This is what the server sends in the TLS handshake.
+
+**PKI = methods 2 + 3:** a few pre-installed root keys, and every other key arrives in a certificate
+signed by one of them, directly or through a chain.
+
+### Q: A middlebox makes its own key pairs, one facing the client and one facing the server, and decrypts both ways. Does that defeat TLS?
+(From my SafeMedia/Clouseau work.) This is a **TLS-intercepting proxy**, the same design as corporate
+"SSL inspection" products and as the Varuth proxy (two-sided TLS termination).
+
+- **Toward the server** it's easy: most servers don't check who the client is, so the box just
+  connects as an ordinary client.
+- **Toward the client** is where PKI stops it: the box must present a certificate for the real server
+  name, signed by a CA the client trusts. It can't get one from a public CA, so the browser shows a
+  certificate warning.
+- **It works only if** the client trusts the box's own root CA (installed in the trust store, as
+  enterprises do on managed laptops) or the user clicks through the warning.
+- **Mutual TLS defeats it on the server side:** if the server demands a client certificate, the box
+  can't produce it without the client's private key.
+
+**Lesson:** PKI doesn't stop someone from making keys. It stops anyone from making keys **that the
+other side will believe**.
+
+### Q: Browsers send "public keys" in the handshake, and the other end decrypts traffic with them. What is that?
+Two different mechanisms, depending on the TLS version:
+
+- **RSA key exchange (SSL 3.0 to TLS 1.2):** the client makes a random secret, **encrypts it with
+  the server's public key** and sends it; the server decrypts it with its private key. Anyone holding
+  the **server's private key** can decrypt recorded traffic later (Wireshark can do this when given
+  the key). That's how passive decryption worked when you owned the server.
+- **(EC)DHE key exchange (optional in TLS 1.2, the only option in TLS 1.3):** each side sends a fresh
+  **ephemeral public key** (the "key share"), and both compute the same session key from them. The
+  server's long-term private key is only used to **sign**, so stealing it later doesn't decrypt old
+  traffic. That property is **forward secrecy**, and it's why passive decryption no longer works:
+  you have to be an active proxy (previous question).
+
+So the public keys you saw browsers send were most likely (EC)DH key shares, or the RSA-encrypted
+secret, depending on the era. Lesson 4 covers the handshake in detail.
