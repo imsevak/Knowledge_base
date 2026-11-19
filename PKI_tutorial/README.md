@@ -16,5 +16,5 @@ lesson, then a short quiz. Each lesson is about 15 minutes of reading plus a lab
 **Setup:** any shell with OpenSSL 3.x (`openssl version`). On Windows, Git Bash includes it.
 Labs work in `~/pki-lab/<lesson>`.
 
-**Books:** *Bulletproof TLS and PKI* (Ivan Ristić) as the main text; *Serious Cryptography*
+**Books:** *Bulletproof SSL and TLS* (Ivan Ristić, 1st ed., the copy I have; the 2nd ed. is *Bulletproof TLS and PKI* and adds TLS 1.3) as the main text; *Serious Cryptography*
 (Jean-Philippe Aumasson) for the math; RFC 5280 for the certificate format.

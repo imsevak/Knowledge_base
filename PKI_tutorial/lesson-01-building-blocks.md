@@ -1,6 +1,6 @@
 # Lesson 1: the problem PKI solves, and its building blocks
 
-**Reading alongside:** *Bulletproof TLS and PKI* (Ristić), chapter 1 (SSL, TLS and cryptography).
+**Reading alongside:** *Bulletproof SSL and TLS* (Ristić, 1st ed.): ch. 1 "Cryptography" (PDF pp. 27–45), ch. 2 "Key Exchange" and "Authentication" (pp. 58–65). For §8 (interception): ch. 4 "Widespread SSL Interception" (p. 133) and ch. 5 "MITM Certificates" (p. 148). This edition predates TLS 1.3, so §5–7 here are the up-to-date version.
 
 ## 1. The problem
 
