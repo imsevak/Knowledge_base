@@ -13,6 +13,8 @@ lesson, then a short quiz. Each lesson is about 15 minutes of reading plus a lab
 | 6 | Rotation and expiry | |
 | 7 | Device identity: keys in a TPM or secure element | |
 
+**Pace:** one lesson every three days: read the matching book chapters, do the lab, answer the quiz, then move on.
+
 **Setup:** any shell with OpenSSL 3.x (`openssl version`). On Windows, Git Bash includes it.
 Labs work in `~/pki-lab/<lesson>`.
 
