@@ -134,3 +134,12 @@ Two different mechanisms, depending on the TLS version:
 
 So the public keys you saw browsers send were most likely (EC)DH key shares, or the RSA-encrypted
 secret, depending on the era. Lesson 4 covers the handshake in detail.
+
+### Q: Back then it was called SSL. Is that different from TLS?
+Same protocol family, renamed. Netscape built **SSL 2.0 (1995) and SSL 3.0 (1996)**; the IETF took it
+over and renamed it **TLS 1.0 (1999)**, which is essentially SSL 3.1. Then TLS 1.1 (2006), 1.2 (2008)
+and 1.3 (2018). All SSL versions and TLS 1.0/1.1 are now deprecated as insecure, but people still say
+"SSL certificate". **HTTPS** never changed: it is HTTP carried inside SSL/TLS, on port 443.
+
+In the SSL era, **RSA key exchange** was the norm (DHE existed but was rarely used), so holding the
+server's private key was enough to decrypt recorded traffic passively.
